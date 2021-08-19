@@ -2983,7 +2983,7 @@ TEST(LoopNest, UnrollMultipleStatements) {
       Block::make(
           {Store::make(a_buf, {x}, x * 2),
            Store::make(b_buf, {x}, Load::make(a_buf, {x}))}));
-  Block::make({f});
+  auto parent_block = Block::make({f});
   StmtPtr unrolled = nullptr;
   LoopNest::unroll(f, &unrolled);
   checkIR(unrolled, R"IR(
@@ -3069,7 +3069,7 @@ TEST(LoopNest, UnrollWithLet) {
           {Let::make(e, 7),
            Store::make(a_buf, {x}, e),
            Store::make(b_buf, {x}, e + 1)}));
-  Block::make({f});
+  auto parent_block = Block::make({f});
   StmtPtr unrolled = nullptr;
   LoopNest::unroll(f, &unrolled);
   std::ostringstream oss;
